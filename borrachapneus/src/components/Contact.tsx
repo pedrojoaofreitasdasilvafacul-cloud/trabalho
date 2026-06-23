@@ -2,57 +2,34 @@ import React, { useState } from 'react';
 import './Contact.css';
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    message: ''
-  });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    });
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-    setStatusMessage('📤 Enviando mensagem...');
+    setStatusMessage('��� Enviando mensagem...');
 
     try {
-      console.log('📤 Enviando dados:', formData);
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
 
-      const response = await fetch('/api/send-email', {
+      const response = await fetch('/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          message: formData.message
-        }),
+        body: formData
       });
 
-      console.log('📥 Status da resposta:', response.status);
-
       if (!response.ok) {
-        const text = await response.text();
-        console.log('📄 Resposta:', text);
-        throw new Error(`Erro ${response.status}: ${text}`);
+        throw new Error('Erro ao enviar mensagem');
       }
-
-      const data = await response.json();
-      console.log('📦 Dados da resposta:', data);
 
       setStatus('success');
       setStatusMessage('✅ Mensagem enviada com sucesso!');
-      setFormData({ email: '', message: '' });
+      form.reset();
     } catch (error) {
-      console.error('❌ Erro detalhado:', error);
+      console.error('Erro:', error);
       setStatus('error');
-      setStatusMessage(error instanceof Error ? error.message : '❌ Erro ao enviar mensagem. Tente novamente.');
+      setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.');
     }
   };
 
@@ -67,16 +44,23 @@ const Contact: React.FC = () => {
         </p>
 
         <div className="contact-simple">
-          <form onSubmit={handleSubmit} className="contact-form-simple">
+          <form 
+            onSubmit={handleSubmit} 
+            className="contact-form-simple"
+            data-netlify="true"
+            name="contact"
+            method="POST"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            
             <div className="form-group">
               <label htmlFor="email">Seu melhor e-mail *</label>
               <input 
                 type="email" 
                 id="email" 
+                name="email"
                 placeholder="seu@email.com" 
                 required 
-                value={formData.email}
-                onChange={handleChange}
                 disabled={status === 'loading'}
               />
             </div>
@@ -85,11 +69,10 @@ const Contact: React.FC = () => {
               <label htmlFor="message">Motivo do contato *</label>
               <textarea 
                 id="message" 
+                name="message"
                 rows={4} 
                 placeholder="Ex: Gostei muito do produto X, poderia me enviar um orçamento?" 
                 required 
-                value={formData.message}
-                onChange={handleChange}
                 disabled={status === 'loading'}
               />
             </div>
@@ -105,7 +88,7 @@ const Contact: React.FC = () => {
               className="btn-submit"
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? '⏳ Enviando...' : '📨 Enviar'}
+              {status === 'loading' ? '⏳ Enviando...' : '��� Enviar'}
             </button>
           </form>
         </div>
