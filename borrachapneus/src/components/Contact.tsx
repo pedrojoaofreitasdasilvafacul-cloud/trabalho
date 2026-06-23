@@ -24,23 +24,36 @@ const Contact: React.FC = () => {
     setStatusMessage('📤 Enviando mensagem...');
 
     try {
-      // Usando Netlify Forms
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      
-      const response = await fetch('/', {
+      console.log('📤 Enviando dados:', formData);
+
+      // CORRIGIDO: Usando a URL correta da API
+      const response = await fetch('/api/send-email', {
         method: 'POST',
-        body: formData
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message
+        }),
       });
 
+      console.log('📥 Status da resposta:', response.status);
+
+      const data = await response.json();
+      console.log('📦 Dados da resposta:', data);
+
       if (!response.ok) {
-        throw new Error('Erro ao enviar mensagem');
+        throw new Error(data.error || 'Erro ao enviar mensagem');
       }
 
       setStatus('success');
       setStatusMessage('✅ Mensagem enviada com sucesso! Entraremos em contato em breve.');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {
+      console.error('❌ Erro detalhado:', error);
       setStatus('error');
       setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.');
     }
@@ -108,20 +121,12 @@ const Contact: React.FC = () => {
           </div>
 
           <div className="contact-form">
-            <form 
-              onSubmit={handleSubmit}
-              data-netlify="true"
-              name="contact"
-              method="POST"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-              
+            <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name">Nome completo</label>
                 <input 
                   type="text" 
                   id="name" 
-                  name="name"
                   placeholder="Seu nome" 
                   required 
                   value={formData.name}
@@ -134,7 +139,6 @@ const Contact: React.FC = () => {
                 <input 
                   type="email" 
                   id="email" 
-                  name="email"
                   placeholder="seu@email.com" 
                   required 
                   value={formData.email}
@@ -147,7 +151,6 @@ const Contact: React.FC = () => {
                 <input 
                   type="tel" 
                   id="phone" 
-                  name="phone"
                   placeholder="(00) 00000-0000" 
                   required 
                   value={formData.phone}
@@ -159,7 +162,6 @@ const Contact: React.FC = () => {
                 <label htmlFor="message">Mensagem</label>
                 <textarea 
                   id="message" 
-                  name="message"
                   rows={5} 
                   placeholder="Descreva sua necessidade..." 
                   required 
