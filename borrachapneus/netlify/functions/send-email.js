@@ -1,8 +1,8 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-exports.handler = async function(event, context) {
-  console.log("üöÄ Enviando email com Gmail!");
-
+export const handler = async (event, context) => {
+  console.log("Ì∫Ä Fun√ß√£o chamada!");
+  
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -33,59 +33,42 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // CONFIGURAR GMAIL - SUBSTITUA PELOS SEUS DADOS
+    console.log("Ì≥© Email:", email);
+    console.log("Ì≥© Mensagem:", message);
+
+    // Criar conta Ethereal para teste
+    const testAccount = await nodemailer.createTestAccount();
+    
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp.ethereal.email",
       port: 587,
       secure: false,
       auth: {
-        user: "pedrojoaofreitasdasilvafacul@gmail.com", // SEU EMAIL
-        pass: "COLE_A_SENHA_DE_APP_AQUI" // A SENHA QUE VOC√ä COPIOU
+        user: testAccount.user,
+        pass: testAccount.pass,
       },
     });
 
-    // 1. ENVIAR EMAIL DE CONFIRMA√á√ÉO PARA O CLIENTE
-    await transporter.sendMail({
-      from: `"Borracha Store" <pedrojoaofreitasdasilvafacul@gmail.com>`,
-      to: email, // Envia para o email que a pessoa digitou
-      subject: `Obrigado pelo contato - Borracha Store`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #FFC107;">üìß Obrigado pelo contato!</h2>
-          <p>Ol√°,</p>
-          <p>Recebemos sua mensagem:</p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #FFC107;">
-            <p style="margin: 0;">"${message}"</p>
-          </div>
-          <p>Entraremos em contato em breve.</p>
-          <hr>
-          <p style="color: #888; font-size: 12px;">
-            Esta √© uma mensagem autom√°tica da Borracha Store.<br>
-            "Seu caminh√£o n√£o pode parar."
-          </p>
-        </div>
-      `,
-    });
-
-    // 2. ENVIAR C√ìPIA PARA VOC√ä
-    await transporter.sendMail({
-      from: `"Borracha Store" <pedrojoaofreitasdasilvafacul@gmail.com>`,
-      to: "pedrojoaofreitasdasilvafacul@gmail.com", // SEU EMAIL PARA RECEBER C√ìPIA
+    const info = await transporter.sendMail({
+      from: `"Borracha Store" <${testAccount.user}>`,
+      replyTo: email,
+      to: "contato@borrachastore.com.br",
       subject: `[Borracha Store] Nova mensagem de ${email}`,
+      text: `Email: ${email}\nMensagem: ${message}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #FFC107;">üìß Nova mensagem de contato</h2>
-          <p><strong>‚úâÔ∏è Email do remetente:</strong> ${email}</p>
+        <h2>Ì≥ß Nova mensagem de contato - Borracha Store</h2>
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
+          <p><strong>‚úâÔ∏è Email:</strong> ${email}</p>
           <hr>
-          <p><strong>üí¨ Mensagem:</strong></p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; border-left: 4px solid #FFC107;">
-            <p style="margin: 0;">${message}</p>
-          </div>
-          <hr>
-          <p style="color: #888; font-size: 12px;">
-            Esta mensagem foi enviada atrav√©s do formul√°rio de contato da Borracha Store.
+          <p><strong>Ì≤¨ Mensagem:</strong></p>
+          <p style="background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #FFC107;">
+            ${message.replace(/\n/g, "<br>")}
           </p>
         </div>
+        <hr>
+        <p style="color: #888; font-size: 12px;">
+          Esta mensagem foi enviada atrav√©s do formul√°rio de contato da Borracha Store.
+        </p>
       `,
     });
 
@@ -94,18 +77,17 @@ exports.handler = async function(event, context) {
       headers,
       body: JSON.stringify({
         success: true,
-        message: "E-mail enviado com sucesso!"
+        message: "E-mail enviado com sucesso!",
+        previewUrl: nodemailer.getTestMessageUrl(info)
       })
     };
 
   } catch (error) {
-    console.error("Erro detalhado:", error);
+    console.error("Erro:", error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({
-        error: "Falha ao enviar o e-mail. Tente novamente." 
-      })
+      body: JSON.stringify({ error: "Falha ao enviar o e-mail. Tente novamente." })
     };
   }
 };
