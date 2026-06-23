@@ -1,7 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Contact.css';
 
 const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setStatusMessage('📤 Enviando mensagem...');
+
+    try {
+      // Usando Netlify Forms
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      
+      const response = await fetch('/', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar mensagem');
+      }
+
+      setStatus('success');
+      setStatusMessage('✅ Mensagem enviada com sucesso! Entraremos em contato em breve.');
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      setStatus('error');
+      setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.');
+    }
+  };
+
   return (
     <section id="contact" className="contact">
       <div className="container">
@@ -64,25 +108,79 @@ const Contact: React.FC = () => {
           </div>
 
           <div className="contact-form">
-            <form>
+            <form 
+              onSubmit={handleSubmit}
+              data-netlify="true"
+              name="contact"
+              method="POST"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              
               <div className="form-group">
                 <label htmlFor="name">Nome completo</label>
-                <input type="text" id="name" placeholder="Seu nome" required />
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name"
+                  placeholder="Seu nome" 
+                  required 
+                  value={formData.name}
+                  onChange={handleChange}
+                  disabled={status === 'loading'}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" placeholder="seu@email.com" required />
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email"
+                  placeholder="seu@email.com" 
+                  required 
+                  value={formData.email}
+                  onChange={handleChange}
+                  disabled={status === 'loading'}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="phone">Telefone</label>
-                <input type="tel" id="phone" placeholder="(00) 00000-0000" required />
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone"
+                  placeholder="(00) 00000-0000" 
+                  required 
+                  value={formData.phone}
+                  onChange={handleChange}
+                  disabled={status === 'loading'}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="message">Mensagem</label>
-                <textarea id="message" rows={5} placeholder="Descreva sua necessidade..." required></textarea>
+                <textarea 
+                  id="message" 
+                  name="message"
+                  rows={5} 
+                  placeholder="Descreva sua necessidade..." 
+                  required 
+                  value={formData.message}
+                  onChange={handleChange}
+                  disabled={status === 'loading'}
+                />
               </div>
-              <button type="submit" className="btn-submit">
-                Enviar Mensagem
+              
+              {statusMessage && (
+                <div className={`status-message ${status}`}>
+                  {statusMessage}
+                </div>
+              )}
+              
+              <button 
+                type="submit" 
+                className="btn-submit"
+                disabled={status === 'loading'}
+              >
+                {status === 'loading' ? '⏳ Enviando...' : '📨 Enviar Mensagem'}
               </button>
             </form>
           </div>
