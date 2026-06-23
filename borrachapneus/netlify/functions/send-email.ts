@@ -1,5 +1,5 @@
 import type { Handler, HandlerEvent } from "@netlify/functions";
-import nodemailer from "nodemailer";
+import * as nodemailer from "nodemailer";
 
 interface ContactPayload {
   email: string;
@@ -69,18 +69,20 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
-  // Configuração do SMTP
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT ?? 587),
-    secure: process.env.SMTP_SECURE === "true",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
-
   try {
+    // Usar Ethereal para teste (email fake)
+    const testAccount = await nodemailer.createTestAccount();
+    
+    const transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
+
     // Montar o conteúdo do email
     const htmlContent = `
       <h2>📧 Nova mensagem de contato - Borracha Store</h2>
@@ -101,25 +103,28 @@ const handler: Handler = async (event: HandlerEvent) => {
     `;
 
     // Envio do e-mail
-    await transporter.sendMail({
-      from: `"Borracha Store" <${process.env.SMTP_USER}>`,
+    const info = await transporter.sendMail({
+      from: `"Borracha Store" <${testAccount.user}>`,
       replyTo: email,
-      to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
+      to: "contato@borrachastore.com.br",
       subject: `[Borracha Store] Nova mensagem de ${name || email}`,
       text: `Nome: ${name || 'Não informado'}\nEmail: ${email}\nTelefone: ${phone || 'Não informado'}\nMensagem: ${message}`,
       html: htmlContent,
     });
+
+    console.log("📧 Email enviado! URL de preview:", nodemailer.getTestMessageUrl(info));
 
     return {
       statusCode: 200,
       headers: corsHeaders(origin),
       body: JSON.stringify({ 
         success: true,
-        message: "E-mail enviado com sucesso! Entraremos em contato em breve." 
+        message: "E-mail enviado com sucesso!",
+        previewUrl: nodemailer.getTestMessageUrl(info)
       }),
     };
   } catch (error) {
-    console.error("Erro ao enviar e-mail:", error);
+    console.error("❌ Erro ao enviar e-mail:", error);
     return {
       statusCode: 500,
       headers: corsHeaders(origin),
