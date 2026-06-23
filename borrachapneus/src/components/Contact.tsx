@@ -8,7 +8,7 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-    setStatusMessage('í³¤ Enviando mensagem...');
+    setStatusMessage('ğŸ“¤ Enviando mensagem...');
 
     try {
       const form = e.target as HTMLFormElement;
@@ -44,51 +44,51 @@ const Contact: React.FC = () => {
         </p>
 
         <div className="contact-simple">
-          <form 
-            onSubmit={handleSubmit} 
+          <form
+            onSubmit={handleSubmit}
             className="contact-form-simple"
             data-netlify="true"
             name="contact"
             method="POST"
           >
             <input type="hidden" name="form-name" value="contact" />
-            
+
             <div className="form-group">
               <label htmlFor="email">Seu melhor e-mail *</label>
-              <input 
-                type="email" 
-                id="email" 
+              <input
+                type="email"
+                id="email"
                 name="email"
-                placeholder="seu@email.com" 
-                required 
+                placeholder="seu@email.com"
+                required
                 disabled={status === 'loading'}
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="message">Motivo do contato *</label>
-              <textarea 
-                id="message" 
+              <textarea
+                id="message"
                 name="message"
-                rows={4} 
-                placeholder="Ex: Gostei muito do produto X, poderia me enviar um orÃ§amento?" 
-                required 
+                rows={4}
+                placeholder="Ex: Gostei muito do produto X, poderia me enviar um orÃ§amento?"
+                required
                 disabled={status === 'loading'}
               />
             </div>
-            
+
             {statusMessage && (
               <div className={`status-message ${status}`}>
                 {statusMessage}
               </div>
             )}
-            
-            <button 
-              type="submit" 
+
+            <button
+              type="submit"
               className="btn-submit"
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? 'â³ Enviando...' : 'í³¨ Enviar'}
+              {status === 'loading' ? 'â³ Enviando...' : 'ğŸ“¨ Enviar'}
             </button>
           </form>
         </div>
