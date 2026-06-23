@@ -1,63 +1,59 @@
-import React, { useState } from 'react'
-import './Contact.css'
+import React, { useState } from 'react';
+import './Contact.css';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
-    message: '',
-  })
-  const [status, setStatus] = useState<
-    'idle' | 'loading' | 'success' | 'error'
-  >('idle')
-  const [statusMessage, setStatusMessage] = useState('')
+    message: ''
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value,
-    })
-  }
+      [e.target.id]: e.target.value
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-    setStatusMessage('📤 Enviando mensagem...')
+    e.preventDefault();
+    setStatus('loading');
+    setStatusMessage('📤 Enviando mensagem...');
 
     try {
-      const response = await fetch(
-        'https://shiny-brioche-95b951.netlify.app/netlify/functions/send-email',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            message: formData.message,
-          }),
-        }
-      )
+      // USAR A URL CORRETA
+      const response = await fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          message: formData.message
+        }),
+      });
 
-      console.log('📥 Status:', response.status)
+      console.log('📥 Status:', response.status);
 
       if (!response.ok) {
-        throw new Error(`Erro ${response.status}`)
+        const text = await response.text();
+        console.log('📄 Resposta:', text);
+        throw new Error(`Erro ${response.status}`);
       }
 
-      const data = await response.json()
-      console.log('📦 Dados:', data)
+      const data = await response.json();
+      console.log('📦 Dados:', data);
 
-      setStatus('success')
-      setStatusMessage('✅ Mensagem enviada com sucesso!')
-      setFormData({ email: '', message: '' })
+      setStatus('success');
+      setStatusMessage('✅ Mensagem enviada com sucesso!');
+      setFormData({ email: '', message: '' });
     } catch (error) {
-      console.error('❌ Erro:', error)
-      setStatus('error')
-      setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.')
+      console.error('❌ Erro:', error);
+      setStatus('error');
+      setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.');
     }
-  }
+  };
 
   return (
     <section id="contact" className="contact">
@@ -98,7 +94,9 @@ const Contact: React.FC = () => {
             </div>
 
             {statusMessage && (
-              <div className={`status-message ${status}`}>{statusMessage}</div>
+              <div className={`status-message ${status}`}>
+                {statusMessage}
+              </div>
             )}
 
             <button
@@ -112,7 +110,7 @@ const Contact: React.FC = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;
