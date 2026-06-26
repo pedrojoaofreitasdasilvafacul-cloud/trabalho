@@ -4,44 +4,80 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 12px 0;
-  background-color: var(--color-primary);
-  transition: var(--transition);
+  padding: 16px 0;
+  background: #111111;
+  transition: all 0.3s ease;
 }
 
 .header.scrolled {
-  padding: 8px 0;
-  box-shadow: var(--shadow-lg);
+  padding: 10px 0;
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: 10px;
   cursor: pointer;
 }
 
-.logo img {
-  height: 40px;
-  width: auto;
-}
-
 .logo-text {
-  font-family: var(--font-secondary);
-  font-size: 1.2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
   font-weight: 800;
-  color: var(--color-white);
+  color: #FFFFFF;
   letter-spacing: 1px;
 }
 
 .logo-text span {
-  color: var(--color-secondary);
+  color: #FFC107;
+}
+
+.nav-menu ul {
+  display: flex;
+  gap: 35px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu a {
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #FFC107;
+  transition: all 0.3s ease;
+}
+
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+.nav-menu a:hover {
+  color: #FFC107;
 }
 
 .menu-toggle {
@@ -55,21 +91,21 @@
 
 .hamburger {
   display: block;
-  width: 24px;
+  width: 28px;
   height: 2px;
-  background-color: var(--color-white);
+  background: #FFFFFF;
   position: relative;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .hamburger::before,
 .hamburger::after {
   content: '';
   position: absolute;
-  width: 24px;
+  width: 28px;
   height: 2px;
-  background-color: var(--color-white);
-  transition: var(--transition);
+  background: #FFFFFF;
+  transition: all 0.3s ease;
 }
 
 .hamburger::before {
@@ -81,7 +117,7 @@
 }
 
 .hamburger.active {
-  background-color: transparent;
+  background: transparent;
 }
 
 .hamburger.active::before {
@@ -94,61 +130,6 @@
   bottom: 0;
 }
 
-.nav-menu ul {
-  display: flex;
-  gap: var(--spacing-xl);
-}
-
-.nav-menu a {
-  color: var(--color-white);
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: var(--transition);
-  position: relative;
-}
-
-.nav-menu a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: var(--color-secondary);
-  transition: var(--transition);
-}
-
-.nav-menu a:hover::after {
-  width: 100%;
-}
-
-.nav-menu a:hover {
-  color: var(--color-secondary);
-}
-
-.header-whatsapp {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  background-color: #25D366;
-  color: var(--color-white);
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: var(--transition);
-}
-
-.header-whatsapp:hover {
-  background-color: #128C7E;
-  transform: scale(1.05);
-}
-
-.header-whatsapp svg {
-  width: 20px;
-  height: 20px;
-}
-
 @media (max-width: 968px) {
   .menu-toggle {
     display: block;
@@ -158,12 +139,12 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px;
+    width: 300px;
     height: 100vh;
-    background-color: var(--color-primary);
-    padding: 80px 32px 32px;
-    transition: var(--transition);
-    box-shadow: var(--shadow-lg);
+    background: #111111;
+    padding: 80px 30px 30px;
+    transition: all 0.4s ease;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
   }
 
   .nav-menu.active {
@@ -172,24 +153,16 @@
 
   .nav-menu ul {
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: 25px;
   }
 
   .nav-menu a {
-    font-size: 1.1rem;
-  }
-
-  .header-whatsapp {
-    display: none;
+    font-size: 1.2rem;
   }
 }
 
 @media (max-width: 480px) {
   .logo-text {
     font-size: 1rem;
-  }
-
-  .logo img {
-    height: 32px;
   }
 }

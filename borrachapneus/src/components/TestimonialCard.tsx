@@ -28,7 +28,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <div className="testimonial-card">
       <div className="testimonial-header">
         <div className="testimonial-avatar">
-          <img src={`/src/assets/images/testimonials/${image}`} alt={name} />
+          <img src={image} alt={name} />
         </div>
         <div className="testimonial-info">
           <h4>{name}</h4>
@@ -39,12 +39,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         </div>
       </div>
       <div className="testimonial-body">
-        <div className="testimonial-quote">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
-          </svg>
-        </div>
-        <p>"{testimony}"</p>
+        <div className="testimonial-quote">"</div>
+        <p>{testimony}</p>
       </div>
     </div>
   );

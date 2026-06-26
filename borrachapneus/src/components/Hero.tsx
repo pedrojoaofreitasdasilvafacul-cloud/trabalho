@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
         <div className="hero-image">
           <div className="hero-image-placeholder">
             <img 
-              src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1024" 
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnuPDZFJzYbR_CyahY3FJgAQHE9RaCruc-JmNEnD5bCQ&s=10" 
               alt="Caminhão moderno com pneus em destaque" 
             />
           </div>

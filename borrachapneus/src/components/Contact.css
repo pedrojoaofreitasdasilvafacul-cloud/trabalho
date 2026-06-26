@@ -1,26 +1,6 @@
 .contact {
-  padding: 64px 0;
-  background-color: #F5F5F5;
-}
-
-.section-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 16px;
-  color: #111111;
-}
-
-.section-title span {
-  color: #FFC107;
-}
-
-.section-subtitle {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #888888;
-  margin-bottom: 48px;
+  padding: 80px 0;
+  background: #f8f9fa;
 }
 
 .contact-simple {
@@ -29,10 +9,10 @@
 }
 
 .contact-form-simple {
-  background-color: #FFFFFF;
+  background: #FFFFFF;
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
 
 .form-group {
@@ -43,7 +23,7 @@
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #111111;
+  color: #111;
   font-size: 0.95rem;
 }
 
@@ -56,14 +36,14 @@
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background-color: #FFFFFF;
+  background: #FFFFFF;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: #FFC107;
-  box-shadow: 0 0 0 3px rgba(255,193,7,0.1);
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
 }
 
 .form-group textarea {
@@ -79,19 +59,19 @@
 }
 
 .status-message.loading {
-  background-color: #FFF3CD;
+  background: #FFF3CD;
   color: #856404;
   border: 1px solid #FFEEBA;
 }
 
 .status-message.success {
-  background-color: #D4EDDA;
+  background: #D4EDDA;
   color: #155724;
   border: 1px solid #C3E6CB;
 }
 
 .status-message.error {
-  background-color: #F8D7DA;
+  background: #F8D7DA;
   color: #721C24;
   border: 1px solid #F5C6CB;
 }
@@ -99,8 +79,8 @@
 .btn-submit {
   width: 100%;
   padding: 16px;
-  background-color: #FFC107;
-  color: #111111;
+  background: #FFC107;
+  color: #111;
   border: none;
   border-radius: 8px;
   font-weight: 700;
@@ -110,9 +90,9 @@
 }
 
 .btn-submit:hover {
-  background-color: #e6a800;
+  background: #e6a800;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-submit:disabled {

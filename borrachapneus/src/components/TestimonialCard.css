@@ -1,24 +1,24 @@
 .testimonial-card {
-  background-color: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xl);
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(0,0,0,0.05);
-  transition: var(--transition);
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
   max-width: 600px;
   margin: 0 auto;
 }
 
 .testimonial-card:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-4px);
 }
 
 .testimonial-header {
   display: flex;
-  gap: var(--spacing-md);
+  gap: 16px;
   align-items: center;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 16px;
 }
 
 .testimonial-avatar {
@@ -27,7 +27,7 @@
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  border: 3px solid var(--color-secondary);
+  border: 3px solid #FFC107;
 }
 
 .testimonial-avatar img {
@@ -37,17 +37,17 @@
 }
 
 .testimonial-info h4 {
-  font-family: var(--font-secondary);
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: #111;
   margin-bottom: 2px;
 }
 
 .testimonial-info p {
-  color: var(--color-gray-medium);
+  color: #888;
   font-size: 0.9rem;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 4px;
 }
 
 .testimonial-stars {
@@ -58,32 +58,28 @@
 .star {
   color: #d3d3d3;
   font-size: 1.2rem;
-  transition: var(--transition);
+  transition: all 0.3s ease;
 }
 
 .star.filled {
-  color: var(--color-secondary);
+  color: #FFC107;
 }
 
 .testimonial-body {
   position: relative;
-  padding-top: var(--spacing-md);
+  padding-top: 16px;
 }
 
 .testimonial-quote {
-  color: var(--color-secondary);
+  color: #FFC107;
   opacity: 0.3;
-  font-size: 2rem;
-  margin-bottom: var(--spacing-sm);
-}
-
-.testimonial-quote svg {
-  width: 40px;
-  height: 40px;
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 8px;
 }
 
 .testimonial-body p {
-  color: var(--color-primary);
+  color: #111;
   font-size: 1.05rem;
   line-height: 1.8;
   font-style: italic;
@@ -91,7 +87,7 @@
 
 @media (max-width: 480px) {
   .testimonial-card {
-    padding: var(--spacing-lg);
+    padding: 24px;
   }
 
   .testimonial-avatar {

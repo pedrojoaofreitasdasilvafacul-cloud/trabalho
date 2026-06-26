@@ -22,7 +22,6 @@ const Contact: React.FC = () => {
     setStatusMessage('📤 Enviando mensagem...');
 
     try {
-      // USAR A URL CORRETA
       const response = await fetch('/.netlify/functions/send-email', {
         method: 'POST',
         headers: {
@@ -34,22 +33,17 @@ const Contact: React.FC = () => {
         }),
       });
 
-      console.log('📥 Status:', response.status);
-
       if (!response.ok) {
-        const text = await response.text();
-        console.log('📄 Resposta:', text);
         throw new Error(`Erro ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('📦 Dados:', data);
 
       setStatus('success');
       setStatusMessage('✅ Mensagem enviada com sucesso!');
       setFormData({ email: '', message: '' });
     } catch (error) {
-      console.error('❌ Erro:', error);
+      console.error('Erro:', error);
       setStatus('error');
       setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.');
     }
@@ -69,38 +63,38 @@ const Contact: React.FC = () => {
           <form onSubmit={handleSubmit} className="contact-form-simple">
             <div className="form-group">
               <label htmlFor="email">Seu melhor e-mail *</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="seu@email.com"
-                required
+              <input 
+                type="email" 
+                id="email" 
+                placeholder="seu@email.com" 
+                required 
                 value={formData.email}
                 onChange={handleChange}
                 disabled={status === 'loading'}
               />
             </div>
-
+            
             <div className="form-group">
               <label htmlFor="message">Motivo do contato *</label>
-              <textarea
-                id="message"
-                rows={4}
-                placeholder="Ex: Gostei muito do produto X, poderia me enviar um orçamento?"
-                required
+              <textarea 
+                id="message" 
+                rows={4} 
+                placeholder="Ex: Gostei muito do produto X, poderia me enviar um orçamento?" 
+                required 
                 value={formData.message}
                 onChange={handleChange}
                 disabled={status === 'loading'}
               />
             </div>
-
+            
             {statusMessage && (
               <div className={`status-message ${status}`}>
                 {statusMessage}
               </div>
             )}
-
-            <button
-              type="submit"
+            
+            <button 
+              type="submit" 
               className="btn-submit"
               disabled={status === 'loading'}
             >

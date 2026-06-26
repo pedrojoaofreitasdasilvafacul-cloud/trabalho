@@ -7,28 +7,28 @@ const Testimonials: React.FC = () => {
   
   const testimonials = [
     {
-      image: 'carlos-mendes.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk7gkNsCaR-Bj8WGWFlmYgYEtW38ehTO9sSkB93uws7w&s=10',
       name: 'Carlos Mendes',
       role: 'Motorista Autônomo',
       stars: 5,
       testimony: 'Atendimento rápido e pneus de excelente qualidade. Recomendo.'
     },
     {
-      image: 'roberto-silva.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_m0e2PfiEggV443KjusiFlMCZuvrpxN6TljRCf1WDpg&s=10',
       name: 'Roberto Silva',
       role: 'Transportadora Sul',
       stars: 5,
       testimony: 'Melhor custo-benefício para manutenção da nossa frota.'
     },
     {
-      image: 'marcos-oliveira.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLoCMOCePTaHGBEF7mqck1sFCTsQhXN2K8jxvBPNc6eg&s=10',
       name: 'Marcos Oliveira',
       role: 'Caminhoneiro',
       stars: 4,
       testimony: 'Equipe muito profissional e serviço executado com rapidez.'
     },
     {
-      image: 'fernando-costa.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTxoJOzDhj-8nkfEfAibh9ZBeMDnUplrTgTBnScLo39A&s=10',
       name: 'Fernando Costa',
       role: 'Logística Nacional',
       stars: 5,
@@ -67,9 +67,7 @@ const Testimonials: React.FC = () => {
 
         <div className="testimonials-carousel">
           <button className="carousel-btn prev" onClick={prevSlide} aria-label="Anterior">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-            </svg>
+            ◀
           </button>
 
           <div className="carousel-track">
@@ -92,9 +90,7 @@ const Testimonials: React.FC = () => {
           </div>
 
           <button className="carousel-btn next" onClick={nextSlide} aria-label="Próximo">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-            </svg>
+            ▶
           </button>
         </div>
 

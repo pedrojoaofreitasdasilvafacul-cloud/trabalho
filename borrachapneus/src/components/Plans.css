@@ -1,22 +1,22 @@
 .plans {
-  padding: var(--spacing-3xl) 0;
-  background: linear-gradient(135deg, var(--color-gray-light) 0%, var(--color-white) 100%);
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #FFFFFF 100%);
 }
 
 .plans-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xl);
-  margin-top: var(--spacing-xl);
+  gap: 30px;
+  margin-top: 30px;
 }
 
 .plan-card {
-  background-color: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xl);
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 40px 30px;
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
   border: 2px solid transparent;
   position: relative;
   display: flex;
@@ -25,13 +25,13 @@
 
 .plan-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 .plan-card.highlighted {
-  border-color: var(--color-secondary);
+  border-color: #FFC107;
   transform: scale(1.02);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 .plan-card.highlighted:hover {
@@ -43,8 +43,8 @@
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  background: #FFC107;
+  color: #111;
   padding: 4px 16px;
   border-radius: 50px;
   font-size: 0.8rem;
@@ -54,33 +54,33 @@
 }
 
 .plan-card h3 {
-  font-family: var(--font-secondary);
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-md);
+  color: #111;
+  margin-bottom: 16px;
 }
 
 .plan-price {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 24px;
 }
 
 .plan-price .price {
-  font-family: var(--font-secondary);
+  font-family: 'Montserrat', sans-serif;
   font-size: 2.5rem;
   font-weight: 900;
-  color: var(--color-primary);
+  color: #111;
 }
 
 .plan-price .period {
   font-size: 0.9rem;
-  color: var(--color-gray-medium);
+  color: #888;
 }
 
 .plan-benefits {
   list-style: none;
   padding: 0;
-  margin: 0 0 var(--spacing-xl) 0;
+  margin: 0 0 24px 0;
   text-align: left;
   flex: 1;
 }
@@ -88,32 +88,31 @@
 .plan-benefits li {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) 0;
-  color: var(--color-primary);
+  gap: 8px;
+  padding: 8px 0;
+  color: #111;
   font-size: 0.95rem;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .plan-benefits li:last-child {
   border-bottom: none;
 }
 
-.plan-benefits svg {
-  width: 20px;
-  height: 20px;
-  color: var(--color-secondary);
-  flex-shrink: 0;
+.plan-benefits .check {
+  color: #FFC107;
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
 .plan-btn {
   display: inline-block;
   padding: 14px 32px;
   border-radius: 50px;
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background: #111111;
+  color: #FFFFFF;
   font-weight: 700;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -121,26 +120,26 @@
 }
 
 .plan-btn:hover {
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  background: #FFC107;
+  color: #111;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .plan-card.highlighted .plan-btn {
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  background: #FFC107;
+  color: #111;
 }
 
 .plan-card.highlighted .plan-btn:hover {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background: #111;
+  color: #FFFFFF;
 }
 
 @media (max-width: 968px) {
   .plans-grid {
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
+    gap: 20px;
   }
 }
 
@@ -148,7 +147,7 @@
   .plans-grid {
     grid-template-columns: 1fr;
     max-width: 400px;
-    margin: var(--spacing-xl) auto 0;
+    margin: 0 auto;
   }
 
   .plan-card.highlighted {

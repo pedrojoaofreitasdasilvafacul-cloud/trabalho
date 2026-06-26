@@ -10,9 +10,7 @@ interface SolutionCardProps {
 const SolutionCard: React.FC<SolutionCardProps> = ({ icon, title, description }) => {
   return (
     <div className="solution-card">
-      <div className="solution-icon">
-        <img src={`/src/assets/images/services/${icon}`} alt={title} />
-      </div>
+      <div className="solution-icon">{icon}</div>
       <h3>{title}</h3>
       <p>{description}</p>
     </div>
@@ -22,32 +20,32 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ icon, title, description })
 const Solutions: React.FC = () => {
   const solutions = [
     {
-      icon: 'tire.svg',
+      icon: '🛞',
       title: 'Venda de Pneus',
       description: 'Trabalhamos com as principais marcas do mercado para garantir segurança e desempenho nas estradas.'
     },
     {
-      icon: 'mounting.svg',
+      icon: '🔧',
       title: 'Montagem Especializada',
       description: 'Instalação profissional realizada por técnicos qualificados.'
     },
     {
-      icon: 'balancing.svg',
+      icon: '⚖️',
       title: 'Balanceamento',
       description: 'Maior estabilidade, economia e vida útil dos pneus.'
     },
     {
-      icon: 'alignment.svg',
+      icon: '📏',
       title: 'Alinhamento',
       description: 'Correção precisa para melhor desempenho e menor desgaste.'
     },
     {
-      icon: 'repair.svg',
+      icon: '🔨',
       title: 'Reparo e Vulcanização',
       description: 'Recuperação profissional para aumentar a durabilidade dos pneus.'
     },
     {
-      icon: 'fleet.svg',
+      icon: '🚛',
       title: 'Atendimento para Frotas',
       description: 'Planos especiais para empresas e transportadoras.'
     }

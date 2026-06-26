@@ -22,9 +22,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ title, price, benefits, isHighlight
       <ul className="plan-benefits">
         {benefits.map((benefit, index) => (
           <li key={index}>
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-            </svg>
+            <span className="check">✓</span>
             {benefit}
           </li>
         ))}
