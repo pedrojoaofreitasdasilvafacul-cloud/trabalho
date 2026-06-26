@@ -1,13 +1,11 @@
 [build]
+  base = "borrachapneus"
   command = "npm run build"
   publish = "dist"
   functions = "netlify/functions"
 
 [functions]
   node_bundler = "esbuild"
-
-[dev]
-  targetPort = 3000
 
 [[redirects]]
   from = "/api/*"
