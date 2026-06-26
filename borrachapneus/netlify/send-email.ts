@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import { Handler } from '@netlify/functions';
 
 export const handler: Handler = async (event) => {
-  console.log("🚀 Enviando email com GMAIL!");
+  console.log("🚀 Enviando email!");
   
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -34,20 +34,20 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    // CONFIGURAÇÃO DO GMAIL COM SEU NOVO EMAIL
+    // USANDO AS VARIÁVEIS DE AMBIENTE
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === "true",
       auth: {
-        user: "jpfdsilva@minha.fag.edu.br",
-        pass: "vkvr ivue hvgg anvd"
-      },
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
     });
 
-    // 1. EMAIL DE CONFIRMAÇÃO PARA O CLIENTE
+    // Email para o cliente
     await transporter.sendMail({
-      from: `"Borracha Store" <jpfdsilva@minha.fag.edu.br>`,
+      from: `"Borracha Store" <${process.env.SMTP_USER}>`,
       to: email,
       subject: `Obrigado pelo contato - Borracha Store`,
       html: `
@@ -58,10 +58,10 @@ export const handler: Handler = async (event) => {
       `,
     });
 
-    // 2. CÓPIA PARA VOCÊ
+    // Cópia para você
     await transporter.sendMail({
-      from: `"Borracha Store" <jpfdsilva@minha.fag.edu.br>`,
-      to: "jpfdsilva@minha.fag.edu.br",
+      from: `"Borracha Store" <${process.env.SMTP_USER}>`,
+      to: process.env.CONTACT_EMAIL,
       subject: `[Borracha Store] Nova mensagem de ${email}`,
       html: `
         <h2>📧 Nova mensagem de contato</h2>
