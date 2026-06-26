@@ -1,95 +1,127 @@
-import nodemailer from 'nodemailer';
-import { Handler } from '@netlify/functions';
+import { Handler } from "@netlify/functions";
+import nodemailer from "nodemailer";
 
-export const handler: Handler = async (event) => {
-  console.log("🚀 Enviando email!");
-  
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type'
-  };
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: process.env.SMTP_SECURE === "true",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
+export const handler: Handler = async (event, context) => {
+  // Verificar CORS
   if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers };
+    return {
+      statusCode: 204,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: "",
+    };
   }
 
+  // Verificar método
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: "Método não permitido" })
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "*",
+      },
+      body: JSON.stringify({ message: "Método não permitido" }),
     };
   }
 
   try {
-    const data = JSON.parse(event.body || '{}');
-    const { email, message } = data;
+    const body = JSON.parse(event.body || "{}");
+    const { email, message } = body;
 
     if (!email || !message) {
       return {
         statusCode: 422,
-        headers,
-        body: JSON.stringify({ error: "Campos obrigatórios" })
+        headers: {
+          "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "*",
+        },
+        body: JSON.stringify({
+          message: 'Campos "email" e "message" são obrigatórios',
+        }),
       };
     }
 
-    // USANDO AS VARIÁVEIS DE AMBIENTE
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === "true",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return {
+        statusCode: 422,
+        headers: {
+          "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "*",
+        },
+        body: JSON.stringify({ message: "E-mail inválido" }),
+      };
+    }
 
-    // Email para o cliente
-    await transporter.sendMail({
-      from: `"Borracha Store" <${process.env.SMTP_USER}>`,
-      to: email,
-      subject: `Obrigado pelo contato - Borracha Store`,
-      html: `
-        <h2>📧 Obrigado pelo contato!</h2>
-        <p>Recebemos sua mensagem: "${message}"</p>
-        <p>Entraremos em contato em breve.</p>
-        <p>Atenciosamente,<br>Borracha Store</p>
-      `,
-    });
-
-    // Cópia para você
-    await transporter.sendMail({
+    const mailOptions = {
       from: `"Borracha Store" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL,
-      subject: `[Borracha Store] Nova mensagem de ${email}`,
+      subject: `Novo contato do site Borracha Store - ${email}`,
       html: `
-        <h2>📧 Nova mensagem de contato</h2>
-        <p><strong>Email do cliente:</strong> ${email}</p>
-        <p><strong>Mensagem:</strong></p>
-        <p style="background: #f5f5f5; padding: 15px; border-radius: 8px;">${message}</p>
-        <hr>
-        <p style="color: #888; font-size: 12px;">Enviado via Borracha Store</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h1 style="color: #FFC107;">🚛 Borracha Store</h1>
+            <hr style="border: 1px solid #e2e8f0;" />
+          </div>
+          <h2 style="color: #1a202c;">Novo contato recebido!</h2>
+          <div style="margin: 20px 0;">
+            <p><strong>📧 Email do cliente:</strong></p>
+            <p style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #FFC107;">
+              ${email}
+            </p>
+          </div>
+          <div style="margin: 20px 0;">
+            <p><strong>💬 Mensagem:</strong></p>
+            <p style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid #FFC107;">
+              ${message}
+            </p>
+          </div>
+          <hr style="border: 1px solid #e2e8f0; margin: 20px 0;" />
+          <p style="color: #718096; font-size: 14px; text-align: center;">
+            Esta mensagem foi enviada através do formulário de contato do site Borracha Store.
+          </p>
+        </div>
       `,
-    });
+      text: `
+        Novo contato do site Borracha Store!
+        Email do cliente: ${email}
+        Mensagem: ${message}
+        Esta mensagem foi enviada através do formulário de contato do site Borracha Store.
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
 
     return {
       statusCode: 200,
-      headers,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "*",
+      },
       body: JSON.stringify({
-        success: true,
-        message: "E-mail enviado com sucesso!"
-      })
+        message: "E-mail enviado com sucesso!",
+      }),
     };
-
   } catch (error) {
-    console.error("Erro detalhado:", error);
+    console.error("Erro ao enviar e-mail:", error);
+
     return {
       statusCode: 500,
-      headers,
-      body: JSON.stringify({ 
-        error: "Falha ao enviar o e-mail. Tente novamente." 
-      })
+      headers: {
+        "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGIN || "*",
+      },
+      body: JSON.stringify({
+        message: "Falha ao enviar e-mail. Tente novamente mais tarde.",
+      }),
     };
   }
 };

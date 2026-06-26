@@ -2,51 +2,47 @@ import React, { useState } from 'react';
 import './Contact.css';
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [statusMessage, setStatusMessage] = useState('');
+  const [formData, setFormData] = useState({ email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('loading');
-    setStatusMessage('📤 Enviando mensagem...');
+    setLoading(true);
+    setError('');
 
     try {
-      const response = await fetch('/.netlify/functions/send-email', {
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: formData.email,
-          message: formData.message
+          message: formData.message,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Erro ${response.status}`);
-      }
-
       const data = await response.json();
 
-      setStatus('success');
-      setStatusMessage('✅ Mensagem enviada com sucesso!');
-      setFormData({ email: '', message: '' });
-    } catch (error) {
-      console.error('Erro:', error);
-      setStatus('error');
-      setStatusMessage('❌ Erro ao enviar mensagem. Tente novamente.');
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        setError(data.message || 'Falha ao enviar. Tente novamente.');
+      }
+    } catch (err) {
+      setError('Erro de conexão. Tente novamente.');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -63,43 +59,46 @@ const Contact: React.FC = () => {
           <form onSubmit={handleSubmit} className="contact-form-simple">
             <div className="form-group">
               <label htmlFor="email">Seu melhor e-mail *</label>
-              <input 
-                type="email" 
-                id="email" 
-                placeholder="seu@email.com" 
-                required 
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="seu@email.com"
                 value={formData.email}
                 onChange={handleChange}
-                disabled={status === 'loading'}
+                required
+                disabled={loading}
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="message">Motivo do contato *</label>
-              <textarea 
-                id="message" 
-                rows={4} 
-                placeholder="Ex: Gostei muito do produto X, poderia me enviar um orçamento?" 
-                required 
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Ex: Gostei muito do produto X, poderia me enviar um orçamento?"
                 value={formData.message}
                 onChange={handleChange}
-                disabled={status === 'loading'}
+                required
+                rows={4}
+                disabled={loading}
               />
             </div>
-            
-            {statusMessage && (
-              <div className={`status-message ${status}`}>
-                {statusMessage}
+
+            <button type="submit" className="btn-submit" disabled={loading}>
+              {loading ? '⏳ Enviando...' : '📨 Enviar'}
+            </button>
+
+            {submitted && (
+              <div className="contact-success">
+                ✅ E-mail enviado com sucesso!
               </div>
             )}
-            
-            <button 
-              type="submit" 
-              className="btn-submit"
-              disabled={status === 'loading'}
-            >
-              {status === 'loading' ? '⏳ Enviando...' : '📨 Enviar'}
-            </button>
+            {error && (
+              <div className="contact-error">
+                ❌ {error}
+              </div>
+            )}
           </form>
         </div>
       </div>
